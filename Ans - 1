@@ -1,0 +1,44 @@
+public class Solution {
+    public int minimumDeleteSum(String s1, String s2) {
+        int m = s1.length();
+        int n = s2.length();
+
+        // Create a 2D array to store the minimum sum of deleted characters
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Initialize the first row and first column of the dp array
+        for (int i = 1; i <= m; i++) {
+            dp[i][0] = dp[i - 1][0] + s1.charAt(i - 1);
+        }
+        for (int j = 1; j <= n; j++) {
+            dp[0][j] = dp[0][j - 1] + s2.charAt(j - 1);
+        }
+
+        // Fill the dp array
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.min(dp[i - 1][j] + s1.charAt(i - 1), dp[i][j - 1] + s2.charAt(j - 1));
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s1 = "sea";
+        String s2 = "eat";
+        int minimumSum = solution.minimumDeleteSum(s1, s2);
+        System.out.println("Minimum ASCII sum of deleted characters: " + minimumSum);
+    }
+}
+
+The minimumDeleteSum function takes two strings s1 and s2 as input and returns the minimum ASCII sum of deleted characters required to make the two strings equal.
+
+The algorithm uses dynamic programming to fill the 2D dp array. The value dp[i][j] represents the minimum ASCII sum of deleted characters required to make the substrings s1[0...i-1] and s2[0...j-1] equal. It iteratively compares characters from s1 and s2 and computes the minimum sum based on whether the characters match or need to be deleted.
+
+Finally, in the main method, we create an instance of the Solution class, initialize the input strings, and call the minimumDeleteSum method to obtain the result. The result is then printed to the console.
