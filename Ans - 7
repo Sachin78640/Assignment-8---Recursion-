@@ -1,0 +1,53 @@
+import java.util.Stack;
+
+public class Solution {
+    public String decodeString(String s) {
+        Stack<Integer> countStack = new Stack<>();  // Stack to store the repeat counts
+        Stack<StringBuilder> stringStack = new Stack<>();  // Stack to store the encoded strings
+        StringBuilder currentString = new StringBuilder();
+        int currentCount = 0;
+
+        for (char c : s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                currentCount = currentCount * 10 + (c - '0');
+            } else if (c == '[') {
+                countStack.push(currentCount);
+                stringStack.push(currentString);
+                currentCount = 0;
+                currentString = new StringBuilder();
+            } else if (c == ']') {
+                StringBuilder decodedString = stringStack.pop();
+                int repeatCount = countStack.pop();
+                for (int i = 0; i < repeatCount; i++) {
+                    decodedString.append(currentString);
+                }
+                currentString = decodedString;
+            } else {
+                currentString.append(c);
+            }
+        }
+
+        return currentString.toString();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s = "3[a]2[bc]";
+        String decodedString = solution.decodeString(s);
+        System.out.println("Decoded string: " + decodedString);
+    }
+}
+
+The decodeString function takes an encoded string s as input and returns the decoded string.
+
+The algorithm uses two stacks, countStack and stringStack, to keep track of the repeat counts and the encoded strings encountered while decoding the input string.
+
+It iterates through the characters of the input string and performs the following operations:
+
+If the character is a digit, it accumulates the repeat count by multiplying the current count by 10 and adding the current digit.
+If the character is '[', it pushes the current count and current string onto their respective stacks and resets the current count and current string.
+If the character is ']', it pops the previous count and previous string from the stacks, appends the repeated current string to the previous string, and assigns it back to the current string.
+If the character is neither a digit, '[', nor ']', it appends the character to the current string.
+Finally, the function returns the decoded string.
+
+In the main method, we create an instance of the Solution class, initialize the input string, and call the decodeString method to obtain the decoded string. The decoded string is then printed to the console.
