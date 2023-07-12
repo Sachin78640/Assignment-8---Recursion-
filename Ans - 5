@@ -1,0 +1,43 @@
+public class Solution {
+    public int compress(char[] chars) {
+        int n = chars.length;
+        int index = 0;
+        int count = 1;
+
+        for (int i = 1; i <= n; i++) {
+            if (i < n && chars[i] == chars[i - 1]) {
+                count++;
+            } else {
+                chars[index++] = chars[i - 1];
+                if (count > 1) {
+                    String countStr = Integer.toString(count);
+                    for (char c : countStr.toCharArray()) {
+                        chars[index++] = c;
+                    }
+                }
+                count = 1;
+            }
+        }
+
+        return index;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        char[] chars = {'a', 'a', 'b', 'b', 'c', 'c', 'c'};
+        int newLength = solution.compress(chars);
+        System.out.println("New length of the array: " + newLength);
+        System.out.print("Modified array: ");
+        for (int i = 0; i < newLength; i++) {
+            System.out.print(chars[i] + " ");
+        }
+    }
+}
+
+The compress function takes an array of characters chars as input and compresses it according to the given algorithm. It returns the new length of the array.
+
+The algorithm uses two pointers, index and count, to keep track of the current position in the modified array and the count of consecutive repeating characters, respectively.
+
+It iterates through the input array, starting from the second character. If the current character is the same as the previous character, the count is incremented. If the current character is different from the previous character or it's the last character, the previous character is added to the modified array at the index position. If the count is greater than 1, the count is converted to a string and each digit is added to the modified array sequentially.
+
+Finally, in the main method, we create an instance of the Solution class, initialize the input array, and call the compress method to obtain the new length of the array. The modified array and the new length are then printed to the console.
