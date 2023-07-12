@@ -1,0 +1,53 @@
+import java.util.Stack;
+
+public class Solution {
+    public boolean checkValidString(String s) {
+        Stack<Integer> leftStack = new Stack<>();
+        Stack<Integer> starStack = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '(') {
+                leftStack.push(i);
+            } else if (c == '*') {
+                starStack.push(i);
+            } else {
+                if (!leftStack.isEmpty()) {
+                    leftStack.pop();
+                } else if (!starStack.isEmpty()) {
+                    starStack.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        while (!leftStack.isEmpty() && !starStack.isEmpty()) {
+            if (leftStack.pop() > starStack.pop()) {
+                return false;
+            }
+        }
+
+        return leftStack.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        String s = "()";
+        boolean isValid = solution.checkValidString(s);
+        System.out.println(isValid);
+    }
+}
+
+The checkValidString function takes a string s as input and returns true if the string is valid according to the given rules, and false otherwise.
+
+The algorithm uses two stacks, leftStack and starStack, to keep track of the indices of left parentheses and stars encountered in the string.
+
+It iterates through each character in the string and performs the following operations:
+
+If the character is '(', it pushes its index onto the leftStack.
+If the character is '*', it pushes its index onto the starStack.
+If the character is ')', it tries to match it with a '(' by popping from leftStack if it's not empty. If leftStack is empty, it tries to match it with a '' by popping from starStack if it's not empty. If both stacks are empty, there is no corresponding '(' or '' to match, and the string is invalid.
+After iterating through the string, there might be unmatched left parentheses in leftStack and unmatched stars in starStack. We need to check if there are any '*' indices that come before the corresponding '(' indices. If there are, the string is invalid. Otherwise, it's valid.
+
+Finally, in the main method, we create an instance of the Solution class, initialize the input string, and call the checkValidString method to obtain the result. The result is then printed to the console.
